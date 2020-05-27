@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlToolTemplateElemenrelMapper" >
+
+	<!-- insert record -->
+	<insert id="insertMlToolTemplateElemenrel" parameterType="com.coder520.POI.UuserRolesMap.entity.MlToolTemplateElemenrelEntity">
+	INSERT INTO ML_TOOL_TEMPLATE_ELEMENT_REL (
+    ID,
+    TEMPLATE_ID,
+    ELEMENT_ID,
+    ISDEL,
+    TENANT,
+    TMS,
+    VNO,
+    TXN_ITT_CHNL_CGY_CODE,
+    TXN_ITT_CHNL_ID,
+    DAC_VERF
+	) VALUES (
+             #{id} ,
+                  #{templateId} ,
+                  #{elementId} ,
+                  #{isdel} ,
+                  #{tenant} ,
+                  #{tms} ,
+                  #{vno} ,
+                  #{txnIttChnlCgyCode} ,
+                  #{txnIttChnlId} ,
+                  #{dacVerf} 
+     	)
+	</insert>
+	
+
+ </mapper>

@@ -16,7 +16,7 @@ import java.util.List;
  * Created by yang on 2017/10/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-cfg.xml")
+@ContextConfiguration("classpath*:spring-cfg.xml")
 public class Test2 {
     @Autowired
     private UserMapper userMapper;

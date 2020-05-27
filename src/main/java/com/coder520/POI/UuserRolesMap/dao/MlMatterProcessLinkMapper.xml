@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlMatterProcessLinkMapper" >
+
+	<!-- insert record -->
+	<insert id="insertMlMatterProcessLink" parameterType="com.coder520.POI.UuserRolesMap.entity.MlMatterProcessLinkEntity">
+	INSERT INTO ML_MATTER_PROCESS_LINK (
+    ID,
+    TASK_GUID,
+    LINK_NAME,
+    HANDLE_DEPT_NAME,
+    HANDLE_PERSON_NAME,
+    HANDLE_DAY,
+    HANDLE_TYPE,
+    IS_SPECIAL,
+    SPECIAL_EXPLAIN,
+    ORDER_NUM,
+    ISDEL,
+    TENANT,
+    TMS,
+    VNO,
+    TXN_ITT_CHNL_CGY_CODE,
+    TXN_ITT_CHNL_ID,
+    DAC_VERF
+	) VALUES (
+             #{id} ,
+                  #{taskGuid} ,
+                  #{linkName} ,
+                  #{handleDeptName} ,
+                  #{handlePersonName} ,
+                  #{handleDay} ,
+                  #{handleType} ,
+                  #{isSpecial} ,
+                  #{specialExplain} ,
+                  #{orderNum} ,
+                  #{isdel} ,
+                  #{tenant} ,
+                  #{tms} ,
+                  #{vno} ,
+                  #{txnIttChnlCgyCode} ,
+                  #{txnIttChnlId} ,
+                  #{dacVerf} 
+     	)
+	</insert>
+
+	
+ </mapper>

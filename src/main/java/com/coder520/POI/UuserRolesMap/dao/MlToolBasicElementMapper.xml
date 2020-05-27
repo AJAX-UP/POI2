@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlToolBasicElementMapper" >
+
+	
+	<!-- insert record -->
+	<insert id="insertMlToolBasicElement" parameterType="com.coder520.POI.UuserRolesMap.entity.MlToolBasicElementEntity">
+	INSERT INTO ML_TOOL_BASIC_ELEMENT (
+    ID,
+    ELEMENT_NAME,
+    ELEMENT_KEY,
+    IS_REQUIRED,
+    IS_READONLY,
+    IS_OVERLAP,
+    ELEMENT_LENGTH,
+    HTML_CONTROL,
+    CONTROL_TYPE,
+    RELATED_CONTROL,
+    API_URI,
+    REQUEST_PARAMETER,
+    CONTROL_VALUE,
+    NUMBER_MIN,
+    NUMBER_MAX,
+    NUMBER_STEP,
+    DEFAULT_VALUE,
+    CLASSIFICATION_ID,
+    SORT_CODE,
+    ISDEL,
+    TENANT,
+    TMS,
+    VNO,
+    TXN_ITT_CHNL_CGY_CODE,
+    TXN_ITT_CHNL_ID,
+    DAC_VERF
+	) VALUES (
+             #{id} ,
+                  #{elementName} ,
+                  #{elementKey} ,
+                  #{isRequired} ,
+                  #{isReadonly} ,
+                  #{isOverlap} ,
+                  #{elementLength} ,
+                  #{htmlControl} ,
+                  #{controlType} ,
+                  #{relatedControl} ,
+                  #{apiUri} ,
+                  #{requestParameter} ,
+                  #{controlValue} ,
+                  #{numberMin} ,
+                  #{numberMax} ,
+                  #{numberStep} ,
+                  #{defaultValue} ,
+                  #{classificationId} ,
+                  #{sortCode} ,
+                  #{isdel} ,
+                  #{tenant} ,
+                  #{tms} ,
+                  #{vno} ,
+                  #{txnIttChnlCgyCode} ,
+                  #{txnIttChnlId} ,
+                  #{dacVerf} 
+     	)
+	</insert>
+	
+
+	
+ </mapper>

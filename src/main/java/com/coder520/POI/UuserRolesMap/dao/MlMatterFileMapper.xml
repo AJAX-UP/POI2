@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlMatterFileMapper" >
+
+	
+	<!-- insert record -->
+	<insert id="insertMlMatterFile" parameterType="com.coder520.POI.UuserRolesMap.entity.MlMatterFileEntity">
+	INSERT INTO ML_MATTER_FILE (
+    ID,
+    TASK_GUID,
+    MATERIAL_NAME,
+    MATERIAL_TYPE,
+    MATERIAL_FORMAT,
+    IS_NEED,
+    FORM_GUID,
+    EXAMPLE_GUID,
+    SOURCE_TYPE,
+    SOURCE_EXPLAIN,
+    PAGE_NUM,
+    PAGE_FORMAT,
+    FILL_EXPLAIN,
+    ACCEPT_STAND,
+    BY_LAW,
+    REMARK,
+    ORDER_NUM,
+    HANDLE_CASE,
+    IS_SELF,
+    CATALOG_FILE_ID,
+    COPY_EXPLAIN,
+    ISDEL,
+    ORIGINALNUM,
+    COPIESNUM,
+    TENANT,
+    TMS,
+    VNO,
+    TXN_ITT_CHNL_CGY_CODE,
+    TXN_ITT_CHNL_ID,
+    DAC_VERF
+	) VALUES (
+             #{id} ,
+                  #{taskGuid} ,
+                  #{materialName} ,
+                  #{materialType} ,
+                  #{materialFormat} ,
+                  #{isNeed} ,
+                  #{formGuid} ,
+                  #{exampleGuid} ,
+                  #{sourceType} ,
+                  #{sourceExplain} ,
+                  #{pageNum} ,
+                  #{pageFormat} ,
+                  #{fillExplain} ,
+                  #{acceptStand} ,
+                  #{byLaw} ,
+                  #{remark} ,
+                  #{orderNum} ,
+                  #{handleCase} ,
+                  #{isSelf} ,
+                  #{catalogFileId} ,
+                  #{copyExplain} ,
+                  #{isdel} ,
+                  #{originalnum} ,
+                  #{copiesnum} ,
+                  #{tenant} ,
+                  #{tms} ,
+                  #{vno} ,
+                  #{txnIttChnlCgyCode} ,
+                  #{txnIttChnlId} ,
+                  #{dacVerf} 
+     	)
+	</insert>
+ </mapper>

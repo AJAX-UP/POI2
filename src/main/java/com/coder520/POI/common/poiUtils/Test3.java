@@ -29,73 +29,7 @@ public class Test3 {
     @Test
     //@Transactional
     public void creatLabInfo() throws FileNotFoundException, IOException, ParseException {
-        String filePath="E:\\01_基本信息.xls";
-        Excel2Data excel2Data=new Excel2Data(filePath);
-        List<LabInfo> labInfoList = excel2Data.CreateLabInfoList();
-        int sum =0;
-        LabInfo labInfo = labInfoList.get(722);
-            try {
-                if (labInfo.getRelieddept()!=null){
-                    LabDepartment labDepartment =null;
-                    String departmentName = (String) labInfo.getRelieddept();
-                    System.out.println(departmentName);
-                    labDepartment = labDepartmentMapper.selectByDepartmentName(departmentName);
-                    //根据依托单位名判断依托单位是否存在
-                    if (labDepartment!=null){
-                        //若依托单位存在，则判断实验室是否存在,存在则更新，不存在则插入
-                        List<LabInfo>  labInfo1 = labInfoMapper.selectByLabNameAndId(labInfo.getLabname(),labDepartment.getDepartmentseqno());
-                        if (labInfo1.size()>0){
-                            labInfo.setDepartmentseqno(labDepartment.getDepartmentseqno());
-                            labInfo.setOrderbykcw("1");
-                            labInfo.setLabseqno(labInfo1.get(0).getLabseqno());
-                            labInfoMapper.updateByPrimaryKeySelective(labInfo);
 
-                        }else {
-                            labInfo.setOrderbykcw("2");
-                            labInfo.setDepartmentseqno(labDepartment.getDepartmentseqno());
-                            labInfoMapper.insertAddKey(labInfo);
-
-                        }
-                    }else {
-                        //若依托单位不存在，则新建依托单位并插入
-                        LabDepartment labDepartment1 = new LabDepartment();
-                        labDepartment1.setDepartmentname(departmentName);
-                        labDepartmentMapper.insertAddKey(labDepartment1);
-                        labInfo.setDepartmentseqno(labDepartment1.getDepartmentseqno());
-                        labInfo.setOrderbykcw("2");
-                        labInfoMapper.insertAddKey(labInfo);
-
-                    }
-                }else {
-                    //判断以其以其载体名创建的是依托单位是否存在，若不存在则创建
-                    LabDepartment labDepartment = labDepartmentMapper.selectByDepartmentName(labInfo.getLabname());
-                    if (labDepartment == null){
-                        LabDepartment labDepartment2 = new LabDepartment();
-                        labDepartment2.setDepartmentname(labInfo.getLabname());
-                        labDepartmentMapper.insertAddKey(labDepartment2);
-                        labInfo.setDepartmentseqno(labDepartment2.getDepartmentseqno());
-                        labInfo.setOrderbykcw("2");
-                        labInfoMapper.insertAddKey(labInfo);
-                    }else {
-                        List<LabInfo>  labInfo1 = labInfoMapper.selectByLabNameAndId(labInfo.getLabname(),labDepartment.getDepartmentseqno());
-                        if (labInfo1.size()>0){
-                            labInfo.setDepartmentseqno(labDepartment.getDepartmentseqno());
-                            labInfo.setOrderbykcw("1");
-                            labInfo.setLabseqno(labInfo1.get(0).getLabseqno());
-                            labInfoMapper.updateByPrimaryKeySelective(labInfo);
-                        }else {
-                            labInfo.setOrderbykcw("2");
-                            labInfo.setDepartmentseqno(labDepartment.getDepartmentseqno());
-                            labInfoMapper.insertAddKey(labInfo);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(labInfo.toString());
-                sum++;
-                System.out.println(sum);
-                e.printStackTrace();
-            }
 
     }
 }

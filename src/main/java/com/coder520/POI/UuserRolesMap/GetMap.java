@@ -84,7 +84,7 @@ public class GetMap {
     }
 
     public static void main(String[] args) throws ParseException {
-        List<LabInfo> labInfoList = new GetMap("E:\\01_基本信息.xls").getLabName();
+        List<LabInfo> labInfoList = new GetMap("D:\\山东省级政务2020-4-29.xls").getLabName();
 
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlMatterResultMapper" >
+
+	
+	<!-- insert record -->
+	<insert id="insertMlMatterResult" parameterType="com.coder520.POI.UuserRolesMap.entity.MlMatterResultEntity">
+	INSERT INTO ML_MATTER_RESULT (
+    ID,
+    TASK_GUID,
+    RESULT_NAME,
+    RESULT_SAMP,
+    ISDEL,
+    CATALOG_RESULT_ID,
+    TENANT,
+    TMS,
+    VNO,
+    TXN_ITT_CHNL_CGY_CODE,
+    TXN_ITT_CHNL_ID,
+    DAC_VERF
+	) VALUES (
+             #{id} ,
+                  #{taskGuid} ,
+                  #{resultName} ,
+                  #{resultSamp} ,
+                  #{isdel} ,
+                  #{catalogResultId} ,
+                  #{tenant} ,
+                  #{tms} ,
+                  #{vno} ,
+                  #{txnIttChnlCgyCode} ,
+                  #{txnIttChnlId} ,
+                  #{dacVerf} 
+     	)
+	</insert>
+	
+
+	
+ </mapper>

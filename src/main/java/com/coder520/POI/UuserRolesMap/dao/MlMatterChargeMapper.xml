@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlMatterChargeMapper" >
+
+	
+	<!-- insert record -->
+	<insert id="insertMlMatterCharge" parameterType="com.coder520.POI.UuserRolesMap.entity.MlMatterChargeEntity">
+	INSERT INTO ML_MATTER_CHARGE (
+    ID,
+    TASK_GUID,
+    FEE_NAME,
+    FEE_STAND,
+    BY_LAW,
+    IS_DESC,
+    DESC_EXPLAIN,
+    REMARK,
+    ORDER_NUM,
+    CATALOG_CHARGE_ID,
+    ISDEL,
+    TENANT,
+    TMS,
+    VNO,
+    TXN_ITT_CHNL_CGY_CODE,
+    TXN_ITT_CHNL_ID,
+    DAC_VERF
+	) VALUES (
+             #{id} ,
+                  #{taskGuid} ,
+                  #{feeName} ,
+                  #{feeStand} ,
+                  #{byLaw} ,
+                  #{isDesc} ,
+                  #{descExplain} ,
+                  #{remark} ,
+                  #{orderNum} ,
+                  #{catalogChargeId} ,
+                  #{isdel} ,
+                  #{tenant} ,
+                  #{tms} ,
+                  #{vno} ,
+                  #{txnIttChnlCgyCode} ,
+                  #{txnIttChnlId} ,
+                  #{dacVerf} 
+     	)
+	</insert>
+	
+
+ </mapper>
