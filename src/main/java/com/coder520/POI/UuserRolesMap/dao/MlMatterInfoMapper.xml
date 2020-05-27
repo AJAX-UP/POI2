@@ -3,7 +3,7 @@
 <mapper namespace="com.coder520.POI.UuserRolesMap.dao.MlMatterInfoMapper" >
 
 	<!-- insert record -->
-	<insert id="insertMlMatterInfo" parameterType="com.coder520.POI.UuserRolesMap.entity.MlMatterInfoEntity">
+	<insert useGeneratedKeys="true" keyProperty="id" keyColumn="id" id="insertMlMatterInfo" parameterType="com.coder520.POI.UuserRolesMap.entity.MlMatterInfoEntity">
 	INSERT INTO ML_MATTER_INFO (
     ID,
     MATTERID,
