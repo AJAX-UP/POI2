@@ -1041,7 +1041,7 @@ public class TestJUnit2 {
 						}
 						obj.setMatterType("1");
 						obj.setAuditStatus("2");
-						obj.setTenant("370000000000");
+						obj.setTenant("000000000000");
 						MlMatterInfoMapper.insertMlMatterInfo(obj);
 						addChildrenItem(sheet,cell002.getStringCellValue(),obj.getId());
 					}else{
@@ -1137,11 +1137,16 @@ public class TestJUnit2 {
 			mlMatterFileMapper.insertMlMatterFile(fileDo);
 
 			//处理事项审批结果表
+
 			MlMatterResultEntity  resultDo = new MlMatterResultEntity();
-					row.getCell(42);
+			HSSFCell cell16 = row.getCell(42);
+			resultDo.setResultName(cell16.getStringCellValue());
+
+			resultDo.setId(getUuid());
+			resultDo.setTaskGuid(id);
+			resultDo.setIsdel("0");
+			resultDo.setTenant(tenant);
 		}
-
-
 	}
 
 	public  void addChildrenItem(HSSFSheet sheet,String parentId,String id){
