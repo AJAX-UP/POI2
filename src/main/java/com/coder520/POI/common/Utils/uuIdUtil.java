@@ -6,7 +6,11 @@ import java.util.UUID;
 public   class uuIdUtil {
 
     public static String getUuid(){
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString().replaceAll("-","");
         return uuid;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getUuid());
     }
 }
