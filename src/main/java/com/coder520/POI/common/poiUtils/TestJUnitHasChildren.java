@@ -1036,7 +1036,7 @@ public class TestJUnitHasChildren {
 						}
 						obj.setMatterType("1");
 						obj.setAuditStatus("2");
-						obj.setTenant("370000000000");
+						obj.setTenant("000000000000");
 						//添加子项
 						MlMatterInfoMapper.insertMlMatterInfo(obj);
 
