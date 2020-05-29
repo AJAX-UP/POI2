@@ -1137,11 +1137,9 @@ public class TestJUnit2 {
 			mlMatterFileMapper.insertMlMatterFile(fileDo);
 
 			//处理事项审批结果表
-
 			MlMatterResultEntity  resultDo = new MlMatterResultEntity();
 			HSSFCell cell16 = row.getCell(42);
 			resultDo.setResultName(cell16.getStringCellValue());
-
 			resultDo.setId(getUuid());
 			resultDo.setTaskGuid(id);
 			resultDo.setIsdel("0");

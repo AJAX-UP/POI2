@@ -1,7 +1,9 @@
 package com.coder520.POI.common.poiUtils;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import org.springframework.util.StringUtils;
 import com.coder520.POI.UuserRolesMap.dao.*;
-import com.coder520.POI.UuserRolesMap.entity.MlMatterInfoEntity;
+import com.coder520.POI.UuserRolesMap.entity.*;
 import com.coder520.POI.common.Utils.uuIdUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -18,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:spring-cfg.xml"})
@@ -57,7 +60,8 @@ public class TestJUnitHasChildren {
 		for (int i = 2; i <=rowLength; i++) {
 			MlMatterInfoEntity obj = new MlMatterInfoEntity();
 			obj.setId(uuIdUtil.getUuid());
-			obj.setMatterid(obj.getId());
+			//obj.setMatterid(obj.getId());
+			obj.setGroupId(obj.getId());
 			if(i==2){
 				//第一行直接保存
 				HSSFRow row=sheet.getRow(i);
@@ -101,17 +105,13 @@ public class TestJUnitHasChildren {
 						obj.setTaskVersion((int)cell8.getNumericCellValue());
 					}
 
-
-
 					HSSFCell cell09=row.getCell(78);
 					if(cell09!=null){
-						if("".equals(cell09.getStringCellValue())){
-							HSSFCell cell9=row.getCell(1);
-							if(cell9!=null){
-								obj.setDeptCode(cell9.getStringCellValue());
-							}
-						}else{
-							obj.setDeptCode(cell09.getStringCellValue());
+						obj.setDeptCode(cell09.getStringCellValue());
+					}else{
+						HSSFCell cell9=row.getCell(1);
+						if(cell9!=null){
+							obj.setDeptCode(cell9.getStringCellValue());
 						}
 					}
 
@@ -388,7 +388,8 @@ public class TestJUnitHasChildren {
 			}else if(i>2){
 
 				obj.setId(uuIdUtil.getUuid());
-				obj.setMatterid(obj.getId());
+				//obj.setMatterid(obj.getId());
+				obj.setGroupId(obj.getId());
 				HSSFRow row0=sheet.getRow(i-1);
 				HSSFRow row=sheet.getRow(i);
 				HSSFCell cell001=row0.getCell(3);
@@ -437,16 +438,13 @@ public class TestJUnitHasChildren {
 
 						HSSFCell cell09=row.getCell(78);
 						if(cell09!=null){
-							if("".equals(cell09.getStringCellValue())){
-								HSSFCell cell9=row.getCell(1);
-								if(cell9!=null){
-									obj.setDeptCode(cell9.getStringCellValue());
-								}
-							}else{
-								obj.setDeptCode(cell09.getStringCellValue());
+							obj.setDeptCode(cell09.getStringCellValue());
+						}else{
+							HSSFCell cell9=row.getCell(1);
+							if(cell9!=null){
+								obj.setDeptCode(cell9.getStringCellValue());
 							}
 						}
-
 
 						HSSFCell cell10=row.getCell(35);
 						if(cell10!=null){
@@ -726,323 +724,816 @@ public class TestJUnitHasChildren {
 		//parentId 是编码  id是数据库id
 		int rowLength=sheet.getLastRowNum();
 		for (int i = 2; i <=rowLength; i++) {
-			MlMatterInfoEntity obj = new MlMatterInfoEntity();
-			HSSFRow row=sheet.getRow(i);
-			HSSFCell cell00=row.getCell(3);
-			obj.setId(uuIdUtil.getUuid());
-			obj.setMatterid(obj.getId());
-			obj.setParentMatterid(id);
-			if(cell00.getStringCellValue().equals(parentId)){
-				//第一行直接保存
-				HSSFCell cell0=row.getCell(113);
-				if(cell0.getStringCellValue()!=null&&cell0.getStringCellValue().equals("有子项")){
-					//有子项
-					HSSFCell cell1=row.getCell(114);
-					obj.setTaskName(cell1.getStringCellValue());
-					HSSFCell cell2=row.getCell(115);
-					if(cell2!=null){
-						obj.setCatalogCode(cell2.getStringCellValue());
-					}
+			if(i==2){
+				MlMatterInfoEntity obj = new MlMatterInfoEntity();
+				HSSFRow row = sheet.getRow(i);
+				HSSFCell cell00 = row.getCell(3);
+				obj.setId(uuIdUtil.getUuid());
+				obj.setMatterid(obj.getId());
+				obj.setParentMatterid(id);
+				obj.setGroupId(id);
+				if (cell00.getStringCellValue().equals(parentId)) {
+					//第一行直接保存
+					HSSFCell cell0 = row.getCell(113);
+					if (cell0.getStringCellValue() != null && cell0.getStringCellValue().equals("有子项")) {
+						//有子项
+						HSSFCell cell1 = row.getCell(114);
+						obj.setTaskName(cell1.getStringCellValue());
+						HSSFCell cell2 = row.getCell(115);
+						if (cell2 != null) {
+							obj.setCatalogCode(cell2.getStringCellValue());
+						}
 
-					HSSFCell cell3=row.getCell(116);
-					if(cell3!=null){
-						if("公共服务".equals(cell3.getStringCellValue())){
-							obj.setTaskType("20");
-						}else{
-							HSSFCell cell33=row.getCell(117);
-							if(cell33!=null){
-								obj.setTaskType(taskType(cell33.getStringCellValue()));
+						HSSFCell cell3 = row.getCell(116);
+						if (cell3 != null) {
+							if ("公共服务".equals(cell3.getStringCellValue())) {
+								obj.setTaskType("20");
+							} else {
+								HSSFCell cell33 = row.getCell(117);
+								if (cell33 != null) {
+									obj.setTaskType(taskType(cell33.getStringCellValue()));
+								}
+							}
+
+						}
+
+						HSSFCell cell4 = row.getCell(165);
+						if (cell4 != null) {
+							obj.setByLaw(cell4.getStringCellValue());
+						}
+
+						HSSFCell cell5 = row.getCell(148);
+						if (cell5 != null) {
+							obj.setPowerSource(powerSource(cell5.getStringCellValue()));
+						}
+
+						HSSFCell cell6 = row.getCell(118);
+						if (cell6 != null) {
+							obj.setUseLevel(cell6.getStringCellValue());
+						}
+
+						HSSFCell cell8 = row.getCell(119);
+						if (cell8 != null) {
+							obj.setTaskVersion((int) cell8.getNumericCellValue());
+						}
+
+
+						HSSFCell cell10 = row.getCell(147);
+						if (cell10 != null) {
+							obj.setDeptType(deptType(cell10.getStringCellValue()));
+						}
+
+						HSSFCell cell11 = row.getCell(150);
+						if (cell11 != null) {
+							cell11.setCellType(Cell.CELL_TYPE_STRING);
+							obj.setAnticipateDay(Integer.valueOf(cell11.getStringCellValue()));
+						}
+						HSSFCell cell12 = row.getCell(151);
+						if (cell12 != null) {
+							cell11.setCellType(Cell.CELL_TYPE_STRING);
+							obj.setPromiseDay((int) cell12.getNumericCellValue());
+						}
+
+
+						HSSFCell cell13 = row.getCell(169);
+						if (cell13 != null) {
+							obj.setAcceptCondition(cell13.getStringCellValue());
+						}
+
+						HSSFCell cell14 = row.getCell(170);
+						if (cell14 != null) {
+							obj.setHandleFlow(cell14.getStringCellValue());
+						}
+						HSSFCell cell15 = row.getCell(152);
+						if (cell15 != null) {
+							obj.setIsFee(cell15.getStringCellValue());
+						}
+
+						HSSFCell cell16 = row.getCell(123);
+						if (cell16 != null) {
+							obj.setProjectType(projectType(cell16.getStringCellValue()));
+						}
+
+
+						//处理服务对象
+						StringBuffer str = new StringBuffer();
+						List<String> list = new ArrayList<String>();
+						HSSFCell cell17 = row.getCell(124);
+						HSSFCell cell18 = row.getCell(125);
+						HSSFCell cell19 = row.getCell(126);
+						HSSFCell cell20 = row.getCell(127);
+						HSSFCell cell21 = row.getCell(128);
+						HSSFCell cell22 = row.getCell(129);
+						HSSFCell cell23 = row.getCell(130);
+						if (cell17 != null) {
+							list.add(serverType(cell17.getStringCellValue()));
+						}
+
+						if (cell18 != null) {
+							list.add(serverType(cell18.getStringCellValue()));
+						}
+
+						if (cell19 != null) {
+							list.add(serverType(cell19.getStringCellValue()));
+						}
+
+						if (cell20 != null) {
+							list.add(serverType(cell20.getStringCellValue()));
+						}
+
+						if (cell21 != null) {
+							list.add(serverType(cell21.getStringCellValue()));
+						}
+						if (cell22 != null) {
+							list.add(serverType(cell22.getStringCellValue()));
+						}
+
+						if (cell23 != null) {
+							list.add(serverType(cell23.getStringCellValue()));
+						}
+
+						for (int t = 0; t < list.size(); t++) {
+							if (!"".equals(list.get(t))) {
+								if ("".equals(str)) {
+									str.append(list.get(t));
+								} else {
+									str.append("^" + list.get(t));
+								}
+							}
+						}
+						obj.setServerType(str.toString());
+
+						//办理形式
+						StringBuffer str1 = new StringBuffer();
+						List<String> list1 = new ArrayList<String>();
+
+						HSSFCell cell24 = row.getCell(133);
+						HSSFCell cell25 = row.getCell(134);
+						HSSFCell cell26 = row.getCell(135);
+						HSSFCell cell27 = row.getCell(136);
+						if (cell24 != null) {
+							list.add(cell24.getStringCellValue());
+						}
+						if (cell25 != null) {
+							list.add(cell25.getStringCellValue());
+						}
+
+						if (cell26 != null) {
+							list.add(cell26.getStringCellValue());
+						}
+
+						if (cell27 != null) {
+							list.add(cell27.getStringCellValue());
+						}
+
+						for (int t = 0; t < list1.size(); t++) {
+							if (!"".equals(list1.get(t))) {
+								if ("".equals(str1)) {
+									str1.append(list1.get(t));
+								} else {
+									str1.append("^" + list1.get(t));
+								}
+							}
+						}
+						obj.setHandleType(str1.toString());
+
+
+						HSSFCell cell28 = row.getCell(163);
+						if (cell28 != null) {
+							obj.setTransactAddr(cell28.getStringCellValue());
+						}
+
+
+						HSSFCell cell29 = row.getCell(164);
+						if (cell29 != null) {
+							obj.setTransactTime(cell29.getStringCellValue());
+						}
+
+
+						HSSFCell cell30 = row.getCell(140);
+						if (cell30 != null) {
+							obj.setIsEntryCenter(cell30.getStringCellValue());
+						}
+
+
+						HSSFCell cell31 = row.getCell(131);
+						if (cell31 != null) {
+							obj.setIsHandle(cell31.getStringCellValue());
+						}
+
+
+						HSSFCell cell32 = row.getCell(131);
+						if (cell32 != null) {
+							obj.setHandleArea(cell32.getStringCellValue());
+						}
+
+
+						HSSFCell cell33 = row.getCell(194);
+						if (cell33 != null) {
+							obj.setLimitExplain(cell33.getStringCellValue());
+						}
+
+
+						HSSFCell cell34 = row.getCell(153);
+						if (cell34 != null) {
+							obj.setResultType(cell34.getStringCellValue());
+						}
+
+
+						HSSFCell cell35 = row.getCell(154);
+						if (cell35 != null) {
+							obj.setResultName(cell35.getStringCellValue());
+						}
+
+
+						HSSFCell cell36 = row.getCell(138);
+						if (cell36 != null) {
+							obj.setIsPayOnline(cell36.getStringCellValue());
+						}
+
+
+						HSSFCell cell37 = row.getCell(132);
+						if (cell37 != null) {
+							obj.setIsExpress(cell37.getStringCellValue());
+						}
+
+
+						HSSFCell cell38 = row.getCell(186);
+						if (cell38 != null) {
+							obj.setConsultPhone(cell38.getStringCellValue());
+						}
+
+
+						HSSFCell cell39 = row.getCell(187);
+						if (cell39 != null) {
+							obj.setComplainPhone(cell39.getStringCellValue());
+						}
+
+
+						HSSFCell cell40 = row.getCell(195);
+						if (cell40 != null) {
+							obj.setAdministrativeReviewDept(cell40.getStringCellValue());
+						}
+
+
+						HSSFCell cell41 = row.getCell(197);
+						if (cell41 != null) {
+							obj.setAdministrativeReviewAddr(cell41.getStringCellValue());
+						}
+
+
+						HSSFCell cell42 = row.getCell(196);
+						if (cell42 != null) {
+							obj.setAdministrativeReviewPhone(cell42.getStringCellValue());
+						}
+
+
+						HSSFCell cell43 = row.getCell(198);
+						if (cell43 != null) {
+							obj.setAdministrativeReviewUrl(cell43.getStringCellValue());
+						}
+
+
+						HSSFCell cell44 = row.getCell(199);
+						if (cell44 != null) {
+							obj.setAdministrativeLitigationDept(cell44.getStringCellValue());
+						}
+
+
+						HSSFCell cell45 = row.getCell(200);
+						if (cell45 != null) {
+							obj.setAdministrativeLitigationAddr(cell45.getStringCellValue());
+						}
+
+
+						HSSFCell cell46 = row.getCell(201);
+						if (cell46 != null) {
+							obj.setAdministrativeLitigationPhone(cell46.getStringCellValue());
+						}
+
+
+						HSSFCell cell47 = row.getCell(202);
+						if (cell47 != null) {
+							obj.setAdministrativeLitigationUrl(cell47.getStringCellValue());
+						}
+
+
+						HSSFCell cell48 = row.getCell(185);
+						if (cell48 != null) {
+							obj.setTaskState(taskState(cell48.getStringCellValue()));
+						}
+
+						obj.setHasChild("0");
+
+						HSSFCell cell50 = row.getCell(137);
+						if (cell50 != null) {
+							obj.setIsExistIntermediary(cell50.getStringCellValue());
+						}
+
+						HSSFCell cell51 = row.getCell(190);
+						if (cell51 != null) {
+							obj.setCurrentDeptCode(cell51.getStringCellValue());
+						}
+						obj.setMatterType("1");
+						obj.setAuditStatus("2");
+						obj.setTenant("370000000000");
+						//添加子项
+						MlMatterInfoMapper.insertMlMatterInfo(obj);
+
+						obj.setMatterType("2");
+						obj.setId(uuIdUtil.getUuid());
+						obj.setMatterid(obj.getId());
+						obj.setParentMatterid(id);
+						obj.setGroupId(id);
+						//添加实施清单
+						MlMatterInfoMapper.insertMlMatterInfo(obj);
+						//添加材料
+						HSSFCell cell0022=row.getCell(115);
+						addMatterFile(sheet,cell0022.getStringCellValue(),obj.getId());
+					}
+				}
+		    }else if(i>2){
+				MlMatterInfoEntity obj = new MlMatterInfoEntity();
+				HSSFRow row = sheet.getRow(i);
+				HSSFRow row0=sheet.getRow(i-1);
+				HSSFCell cell0011=row0.getCell(115);
+				HSSFCell cell0022=row.getCell(115);
+				//判断是否重复的子项
+				if(cell0011.getStringCellValue().equals(cell0022.getStringCellValue())){
+				   continue;
+				}
+				HSSFCell cell00 = row.getCell(3);
+				obj.setId(uuIdUtil.getUuid());
+				obj.setMatterid(obj.getId());
+				obj.setParentMatterid(id);
+				obj.setGroupId(id);
+				if (cell00.getStringCellValue().equals(parentId)) {
+					//第一行直接保存
+					HSSFCell cell0 = row.getCell(113);
+					if (cell0.getStringCellValue() != null && cell0.getStringCellValue().equals("有子项")) {
+						//有子项
+						HSSFCell cell1 = row.getCell(114);
+						obj.setTaskName(cell1.getStringCellValue());
+						HSSFCell cell2 = row.getCell(115);
+						if (cell2 != null) {
+							obj.setCatalogCode(cell2.getStringCellValue());
+						}
+
+						HSSFCell cell3 = row.getCell(116);
+						if (cell3 != null) {
+							if ("公共服务".equals(cell3.getStringCellValue())) {
+								obj.setTaskType("20");
+							} else {
+								HSSFCell cell33 = row.getCell(117);
+								if (cell33 != null) {
+									obj.setTaskType(taskType(cell33.getStringCellValue()));
+								}
+							}
+
+						}
+
+						HSSFCell cell4 = row.getCell(165);
+						if (cell4 != null) {
+							obj.setByLaw(cell4.getStringCellValue());
+						}
+
+						HSSFCell cell5 = row.getCell(148);
+						if (cell5 != null) {
+							obj.setPowerSource(powerSource(cell5.getStringCellValue()));
+						}
+
+						HSSFCell cell6 = row.getCell(118);
+						if (cell6 != null) {
+							obj.setUseLevel(cell6.getStringCellValue());
+						}
+
+						HSSFCell cell8 = row.getCell(119);
+						if (cell8 != null) {
+							obj.setTaskVersion((int) cell8.getNumericCellValue());
+						}
+
+
+						HSSFCell cell10 = row.getCell(147);
+						if (cell10 != null) {
+							obj.setDeptType(deptType(cell10.getStringCellValue()));
+						}
+
+						HSSFCell cell11 = row.getCell(150);
+						if (cell11 != null) {
+							cell11.setCellType(Cell.CELL_TYPE_STRING);
+							obj.setAnticipateDay(Integer.valueOf(cell11.getStringCellValue()));
+						}
+						HSSFCell cell12 = row.getCell(151);
+						if (cell12 != null) {
+							cell11.setCellType(Cell.CELL_TYPE_STRING);
+							obj.setPromiseDay((int) cell12.getNumericCellValue());
+						}
+
+
+						HSSFCell cell13 = row.getCell(169);
+						if (cell13 != null) {
+							obj.setAcceptCondition(cell13.getStringCellValue());
+						}
+
+						HSSFCell cell14 = row.getCell(170);
+						if (cell14 != null) {
+							obj.setHandleFlow(cell14.getStringCellValue());
+						}
+						HSSFCell cell15 = row.getCell(152);
+						if (cell15 != null) {
+							obj.setIsFee(cell15.getStringCellValue());
+						}
+
+						HSSFCell cell16 = row.getCell(123);
+						if (cell16 != null) {
+							obj.setProjectType(projectType(cell16.getStringCellValue()));
+						}
+
+
+						//处理服务对象
+						StringBuffer str = new StringBuffer();
+						List<String> list = new ArrayList<String>();
+						HSSFCell cell17 = row.getCell(124);
+						HSSFCell cell18 = row.getCell(125);
+						HSSFCell cell19 = row.getCell(126);
+						HSSFCell cell20 = row.getCell(127);
+						HSSFCell cell21 = row.getCell(128);
+						HSSFCell cell22 = row.getCell(129);
+						HSSFCell cell23 = row.getCell(130);
+						if (cell17 != null) {
+							list.add(serverType(cell17.getStringCellValue()));
+						}
+
+						if (cell18 != null) {
+							list.add(serverType(cell18.getStringCellValue()));
+						}
+
+						if (cell19 != null) {
+							list.add(serverType(cell19.getStringCellValue()));
+						}
+
+						if (cell20 != null) {
+							list.add(serverType(cell20.getStringCellValue()));
+						}
+
+						if (cell21 != null) {
+							list.add(serverType(cell21.getStringCellValue()));
+						}
+						if (cell22 != null) {
+							list.add(serverType(cell22.getStringCellValue()));
+						}
+
+						if (cell23 != null) {
+							list.add(serverType(cell23.getStringCellValue()));
+						}
+
+						for (int t = 0; t < list.size(); t++) {
+							if (!"".equals(list.get(t))) {
+								if ("".equals(str)) {
+									str.append(list.get(t));
+								} else {
+									str.append("^" + list.get(t));
+								}
+							}
+						}
+						obj.setServerType(str.toString());
+
+						//办理形式
+						StringBuffer str1 = new StringBuffer();
+						List<String> list1 = new ArrayList<String>();
+
+						HSSFCell cell24 = row.getCell(133);
+						HSSFCell cell25 = row.getCell(134);
+						HSSFCell cell26 = row.getCell(135);
+						HSSFCell cell27 = row.getCell(136);
+						if (cell24 != null) {
+							list.add(cell24.getStringCellValue());
+						}
+						if (cell25 != null) {
+							list.add(cell25.getStringCellValue());
+						}
+
+						if (cell26 != null) {
+							list.add(cell26.getStringCellValue());
+						}
+
+						if (cell27 != null) {
+							list.add(cell27.getStringCellValue());
+						}
+
+						for (int t = 0; t < list1.size(); t++) {
+							if (!"".equals(list1.get(t))) {
+								if ("".equals(str1)) {
+									str1.append(list1.get(t));
+								} else {
+									str1.append("^" + list1.get(t));
+								}
+							}
+						}
+						obj.setHandleType(str1.toString());
+
+
+						HSSFCell cell28 = row.getCell(163);
+						if (cell28 != null) {
+							obj.setTransactAddr(cell28.getStringCellValue());
+						}
+
+
+						HSSFCell cell29 = row.getCell(164);
+						if (cell29 != null) {
+							obj.setTransactTime(cell29.getStringCellValue());
+						}
+
+
+						HSSFCell cell30 = row.getCell(140);
+						if (cell30 != null) {
+							obj.setIsEntryCenter(cell30.getStringCellValue());
+						}
+
+
+						HSSFCell cell31 = row.getCell(131);
+						if (cell31 != null) {
+							obj.setIsHandle(cell31.getStringCellValue());
+						}
+
+
+						HSSFCell cell32 = row.getCell(131);
+						if (cell32 != null) {
+							obj.setHandleArea(cell32.getStringCellValue());
+						}
+
+
+						HSSFCell cell33 = row.getCell(194);
+						if (cell33 != null) {
+							obj.setLimitExplain(cell33.getStringCellValue());
+						}
+
+
+						HSSFCell cell34 = row.getCell(153);
+						if (cell34 != null) {
+							obj.setResultType(cell34.getStringCellValue());
+						}
+
+
+						HSSFCell cell35 = row.getCell(154);
+						if (cell35 != null) {
+							obj.setResultName(cell35.getStringCellValue());
+						}
+
+
+						HSSFCell cell36 = row.getCell(138);
+						if (cell36 != null) {
+							obj.setIsPayOnline(cell36.getStringCellValue());
+						}
+
+
+						HSSFCell cell37 = row.getCell(132);
+						if (cell37 != null) {
+							obj.setIsExpress(cell37.getStringCellValue());
+						}
+
+
+						HSSFCell cell38 = row.getCell(186);
+						if (cell38 != null) {
+							obj.setConsultPhone(cell38.getStringCellValue());
+						}
+
+
+						HSSFCell cell39 = row.getCell(187);
+						if (cell39 != null) {
+							obj.setComplainPhone(cell39.getStringCellValue());
+						}
+
+
+						HSSFCell cell40 = row.getCell(195);
+						if (cell40 != null) {
+							obj.setAdministrativeReviewDept(cell40.getStringCellValue());
+						}
+
+
+						HSSFCell cell41 = row.getCell(197);
+						if (cell41 != null) {
+							obj.setAdministrativeReviewAddr(cell41.getStringCellValue());
+						}
+
+
+						HSSFCell cell42 = row.getCell(196);
+						if (cell42 != null) {
+							obj.setAdministrativeReviewPhone(cell42.getStringCellValue());
+						}
+
+
+						HSSFCell cell43 = row.getCell(198);
+						if (cell43 != null) {
+							obj.setAdministrativeReviewUrl(cell43.getStringCellValue());
+						}
+
+
+						HSSFCell cell44 = row.getCell(199);
+						if (cell44 != null) {
+							obj.setAdministrativeLitigationDept(cell44.getStringCellValue());
+						}
+
+
+						HSSFCell cell45 = row.getCell(200);
+						if (cell45 != null) {
+							obj.setAdministrativeLitigationAddr(cell45.getStringCellValue());
+						}
+
+
+						HSSFCell cell46 = row.getCell(201);
+						if (cell46 != null) {
+							obj.setAdministrativeLitigationPhone(cell46.getStringCellValue());
+						}
+
+
+						HSSFCell cell47 = row.getCell(202);
+						if (cell47 != null) {
+							obj.setAdministrativeLitigationUrl(cell47.getStringCellValue());
+						}
+
+
+						HSSFCell cell48 = row.getCell(185);
+						if (cell48 != null) {
+							obj.setTaskState(taskState(cell48.getStringCellValue()));
+						}
+
+						obj.setHasChild("0");
+
+						HSSFCell cell50 = row.getCell(137);
+						if (cell50 != null) {
+							obj.setIsExistIntermediary(cell50.getStringCellValue());
+						}
+
+						HSSFCell cell51 = row.getCell(190);
+						if (cell51 != null) {
+							obj.setCurrentDeptCode(cell51.getStringCellValue());
+						}
+						obj.setMatterType("1");
+						obj.setAuditStatus("2");
+						obj.setTenant("370000000000");
+						//添加子项
+						MlMatterInfoMapper.insertMlMatterInfo(obj);
+
+						obj.setMatterType("2");
+						obj.setId(uuIdUtil.getUuid());
+						obj.setMatterid(obj.getId());
+						obj.setParentMatterid(id);
+						obj.setGroupId(id);
+						//添加实施清单
+						MlMatterInfoMapper.insertMlMatterInfo(obj);
+                        //常见问题表
+						MlMatterQuestionEntity questionDo = new MlMatterQuestionEntity();
+						HSSFCell cell = row.getCell(171);
+						if(cell!=null){
+							String json = cell.getStringCellValue();
+							List<Map>  list55 = (List<Map>) JSONUtils.parse(json);
+							for (Map m : list55){
+								String an =(String) m.get("val");
+								questionDo.setAnswer(an);
+								String ques = (String) m.get("name");
+								questionDo.setQuestion(ques);
+								questionDo.setId(uuIdUtil.getUuid());
+								questionDo.setTaskGuid(id);
+								questionDo.setIsdel("0");
+								questionDo.setOrderNum(i);
+								mlMatterQuestionMapper.insertMlMatterQuestion(questionDo);
+							}
+						}
+                        //流程表
+						MlMatterProcessLinkEntity processDo = new MlMatterProcessLinkEntity();
+						HSSFCell cell122 = row.getCell(170);
+						if(cell122!=null){
+							String proessJson = cell122.getStringCellValue();
+
+							List<Map>  list3 = (List<Map>) JSONUtils.parse(proessJson);
+							for(Map process:list3){
+								Integer pDay=0;
+								if("".equals(getNumberText(process.get("banlishixian").toString()))){
+
+								}else{
+									pDay = Integer.valueOf(getNumberText(process.get("banlishixian").toString()));
+								}
+								String linkName = (String)process.get("huanjiemingcheng");
+								processDo.setLinkName(linkName);
+								processDo.setHandleDay(pDay);
+								processDo.setId(uuIdUtil.getUuid());
+								processDo.setTaskGuid(id);
+								processDo.setIsdel("0");
+								processDo.setOrderNum(i);
+								mlMatterProcessLinkMapper.insertMlMatterProcessLink(processDo);
 							}
 						}
 
-					}
-
-					HSSFCell cell4=row.getCell(165);
-					if(cell4!=null){
-						obj.setByLaw(cell4.getStringCellValue());
-					}
-
-					HSSFCell cell5=row.getCell(148);
-					if(cell5!=null){
-						obj.setPowerSource(powerSource(cell5.getStringCellValue()));
-					}
-
-					HSSFCell cell6=row.getCell(118);
-					if(cell6!=null){
-						obj.setUseLevel(cell6.getStringCellValue());
-					}
-
-					HSSFCell cell8=row.getCell(119);
-					if(cell8!=null){
-						obj.setTaskVersion((int)cell8.getNumericCellValue());
-					}
-
-
-					HSSFCell cell10=row.getCell(147);
-					if(cell10!=null){
-						obj.setDeptType(deptType(cell10.getStringCellValue()));
-					}
-
-					HSSFCell cell11=row.getCell(150);
-					if(cell11!=null){
-						cell11.setCellType(Cell.CELL_TYPE_STRING);
-						obj.setAnticipateDay(Integer.valueOf(cell11.getStringCellValue()));
-					}
-					HSSFCell cell12=row.getCell(151);
-					if(cell12!=null){
-						cell11.setCellType(Cell.CELL_TYPE_STRING);
-						obj.setPromiseDay((int)cell12.getNumericCellValue());
-					}
-
-
-					HSSFCell cell13=row.getCell(169);
-					if(cell13!=null){
-						obj.setAcceptCondition(cell13.getStringCellValue());
-					}
-
-					HSSFCell cell14=row.getCell(170);
-					if(cell14!=null){
-						obj.setHandleFlow(cell14.getStringCellValue());
-					}
-					HSSFCell cell15=row.getCell(152);
-					if(cell15!=null){
-						obj.setIsFee(cell15.getStringCellValue());
-					}
-
-					HSSFCell cell16=row.getCell(123);
-					if(cell16!=null){
-						obj.setProjectType(projectType(cell16.getStringCellValue()));
-					}
-
-
-					//处理服务对象
-					StringBuffer str=new StringBuffer();
-					List<String> list=new ArrayList<String>();
-					HSSFCell cell17=row.getCell(124);
-					HSSFCell cell18=row.getCell(125);
-					HSSFCell cell19=row.getCell(126);
-					HSSFCell cell20=row.getCell(127);
-					HSSFCell cell21=row.getCell(128);
-					HSSFCell cell22=row.getCell(129);
-					HSSFCell cell23=row.getCell(130);
-					if(cell17!=null){
-						list.add(serverType(cell17.getStringCellValue()));
-					}
-
-					if(cell18!=null){
-						list.add(serverType(cell18.getStringCellValue()));
-					}
-
-					if(cell19!=null){
-						list.add(serverType(cell19.getStringCellValue()));
-					}
-
-					if(cell20!=null){
-						list.add(serverType(cell20.getStringCellValue()));
-					}
-
-					if(cell21!=null){
-						list.add(serverType(cell21.getStringCellValue()));
-					}
-					if(cell22!=null){
-						list.add(serverType(cell22.getStringCellValue()));
-					}
-
-					if(cell23!=null){
-						list.add(serverType(cell23.getStringCellValue()));
-					}
-
-					for(int t=0;t<list.size();t++){
-						if(!"".equals(list.get(t))){
-							if("".equals(str)){
-								str.append(list.get(t));
-							}else{
-								str.append("^"+list.get(t));
-							}
+						//处理事项审批结果表
+						MlMatterResultEntity resultDo = new MlMatterResultEntity();
+						HSSFCell cell16666 = row.getCell(154);
+						if(cell16666!=null){
+							resultDo.setResultName(cell16666.getStringCellValue());
+							resultDo.setId(uuIdUtil.getUuid());
+							resultDo.setTaskGuid(id);
+							resultDo.setIsdel("0");
+							mlMatterResultMapper.insertMlMatterResult(resultDo);
 						}
+						//添加材料
+						addMatterFile(sheet,cell0022.getStringCellValue(),obj.getId());
 					}
-					obj.setServerType(str.toString());
-
-					//办理形式
-					StringBuffer str1=new StringBuffer();
-					List<String> list1=new ArrayList<String>();
-
-					HSSFCell cell24=row.getCell(133);
-					HSSFCell cell25=row.getCell(134);
-					HSSFCell cell26=row.getCell(135);
-					HSSFCell cell27=row.getCell(136);
-					if(cell24!=null){
-						list.add(cell24.getStringCellValue());
-					}
-					if(cell25!=null){
-						list.add(cell25.getStringCellValue());
-					}
-
-					if(cell26!=null){
-						list.add(cell26.getStringCellValue());
-					}
-
-					if(cell27!=null){
-						list.add(cell27.getStringCellValue());
-					}
-
-					for(int t=0;t<list1.size();t++){
-						if(!"".equals(list1.get(t))){
-							if("".equals(str1)){
-								str1.append(list1.get(t));
-							}else{
-								str1.append("^"+list1.get(t));
-							}
-						}
-					}
-					obj.setHandleType(str1.toString());
-
-
-					HSSFCell cell28=row.getCell(163);
-					if(cell28!=null){
-						obj.setTransactAddr(cell28.getStringCellValue());
-					}
-
-
-					HSSFCell cell29=row.getCell(164);
-					if(cell29!=null){
-						obj.setTransactTime(cell29.getStringCellValue());
-					}
-
-
-					HSSFCell cell30=row.getCell(140);
-					if(cell30!=null){
-						obj.setIsEntryCenter(cell30.getStringCellValue());
-					}
-
-
-					HSSFCell cell31=row.getCell(131);
-					if(cell31!=null){
-						obj.setIsHandle(cell31.getStringCellValue());
-					}
-
-
-					HSSFCell cell32=row.getCell(131);
-					if(cell32!=null){
-						obj.setHandleArea(cell32.getStringCellValue());
-					}
-
-
-					HSSFCell cell33=row.getCell(194);
-					if(cell33!=null){
-						obj.setLimitExplain(cell33.getStringCellValue());
-					}
-
-
-					HSSFCell cell34=row.getCell(153);
-					if(cell34!=null){
-						obj.setResultType(cell34.getStringCellValue());
-					}
-
-
-					HSSFCell cell35=row.getCell(154);
-					if(cell35!=null){
-						obj.setResultName(cell35.getStringCellValue());
-					}
-
-
-					HSSFCell cell36=row.getCell(138);
-					if(cell36!=null){
-						obj.setIsPayOnline(cell36.getStringCellValue());
-					}
-
-
-					HSSFCell cell37=row.getCell(132);
-					if(cell37!=null){
-						obj.setIsExpress(cell37.getStringCellValue());
-					}
-
-
-					HSSFCell cell38=row.getCell(186);
-					if(cell38!=null){
-						obj.setConsultPhone(cell38.getStringCellValue());
-					}
-
-
-					HSSFCell cell39=row.getCell(187);
-					if(cell39!=null){
-						obj.setComplainPhone(cell39.getStringCellValue());
-					}
-
-
-					HSSFCell cell40=row.getCell(195);
-					if(cell40!=null){
-						obj.setAdministrativeReviewDept(cell40.getStringCellValue());
-					}
-
-
-
-					HSSFCell cell41=row.getCell(197);
-					if(cell41!=null){
-						obj.setAdministrativeReviewAddr(cell41.getStringCellValue());
-					}
-
-
-					HSSFCell cell42=row.getCell(196);
-					if(cell42!=null){
-						obj.setAdministrativeReviewPhone(cell42.getStringCellValue());
-					}
-
-
-					HSSFCell cell43=row.getCell(198);
-					if(cell43!=null){
-						obj.setAdministrativeReviewUrl(cell43.getStringCellValue());
-					}
-
-
-					HSSFCell cell44=row.getCell(199);
-					if(cell44!=null){
-						obj.setAdministrativeLitigationDept(cell44.getStringCellValue());
-					}
-
-
-					HSSFCell cell45=row.getCell(200);
-					if(cell45!=null){
-						obj.setAdministrativeLitigationAddr(cell45.getStringCellValue());
-					}
-
-
-					HSSFCell cell46=row.getCell(201);
-					if(cell46!=null){
-						obj.setAdministrativeLitigationPhone(cell46.getStringCellValue());
-					}
-
-
-					HSSFCell cell47=row.getCell(202);
-					if(cell47!=null){
-						obj.setAdministrativeLitigationUrl(cell47.getStringCellValue());
-					}
-
-
-					HSSFCell cell48=row.getCell(185);
-					if(cell48!=null){
-						obj.setTaskState(taskState(cell48.getStringCellValue()));
-					}
-
-					obj.setHasChild("0");
-
-					HSSFCell cell50=row.getCell(137);
-					if(cell50!=null){
-						obj.setIsExistIntermediary(cell50.getStringCellValue());
-					}
-
-					HSSFCell cell51=row.getCell(190);
-					if(cell51!=null){
-						obj.setCurrentDeptCode(cell51.getStringCellValue());
-					}
-					obj.setMatterType("1");
-					obj.setAuditStatus("2");
-					obj.setTenant("370000000000");
-					MlMatterInfoMapper.insertMlMatterInfo(obj);
 				}
 			}
 		}
 	}
+
+
+	//添加事项材料
+	public  void addMatterFile(HSSFSheet sheet,String parentId,String id){
+		int rowLength=sheet.getLastRowNum();
+		for (int i = 2; i <=rowLength; i++) {
+			HSSFRow row = sheet.getRow(i);
+			HSSFCell cell0022=row.getCell(115);
+			if(cell0022==null){
+				continue;
+			}
+			if(parentId.equals(cell0022.getStringCellValue())){
+				MlMatterFileEntity fileDo = new MlMatterFileEntity();
+				HSSFCell cell2 = row.getCell(203);
+					if(cell2!=null){
+						fileDo.setMaterialName(cell2.getStringCellValue());
+						HSSFCell cell3 = row.getCell(205);
+						if(cell3!=null){
+							fileDo.setMaterialType(materialType(cell3.getStringCellValue()));
+						}
+
+						HSSFCell cell4 = row.getCell(206);
+						if(cell4!=null){
+							fileDo.setMaterialFormat(materialFormat(cell4.getStringCellValue()));
+						}
+
+						HSSFCell cell6 = row.getCell(208);
+						if(cell6!=null){
+							fileDo.setPageFormat(cell6.getStringCellValue());
+						}
+
+
+						HSSFCell cell7 = row.getCell(209);
+						if(cell7!=null){
+							fileDo.setIsNeed(isNeed(cell7.getStringCellValue()));
+						}
+
+						HSSFCell cell8 = row.getCell(212);
+						if(cell8!=null){
+							fileDo.setFormGuid(cell8.getStringCellValue());
+						}
+
+						HSSFCell cell9 = row.getCell(213);
+						if(cell9!=null){
+							fileDo.setExampleGuid(cell9.getStringCellValue());
+						}
+
+
+						HSSFCell cell10 = row.getCell(214);
+						if(cell10!=null){
+							fileDo.setSourceType(sourceType(cell10.getStringCellValue()));
+						}
+
+						HSSFCell cell11 = row.getCell(215);
+						if(cell11!=null){
+							fileDo.setSourceExplain(cell11.getStringCellValue());
+						}
+
+
+						HSSFCell cell12 = row.getCell(221);
+						if(cell12!=null){
+							fileDo.setFillExplain(cell12.getStringCellValue());
+						}
+						HSSFCell cell13 = row.getCell(222);
+						if(cell13!=null){
+							fileDo.setAcceptStand(cell13.getStringCellValue());
+						}
+
+
+						HSSFCell cell14 = row.getCell(223);
+						if(cell14!=null){
+							fileDo.setByLaw(cell14.getStringCellValue());
+						}
+
+
+						HSSFCell cell15 = row.getCell(224);
+						if(cell15!=null){
+							fileDo.setRemark(cell15.getStringCellValue());
+						}
+
+						fileDo.setId(uuIdUtil.getUuid());
+						fileDo.setTaskGuid(id);
+						fileDo.setIsdel("0");
+						fileDo.setOrderNum(i);
+						mlMatterFileMapper.insertMlMatterFile(fileDo);
+					}
+
+			}
+
+		}
+	}
+
 
 	public String taskType(String type){
         String result="";
@@ -1061,6 +1552,17 @@ public class TestJUnitHasChildren {
 		return result;
 	}
 
+
+	public String materialFormat(String type){
+		String result="5";
+		switch(type){
+			case "纸质版":result="1";break;
+			case "电子版":result="2";break;
+			case "纸质版和电子版":result="3";break;
+			case "实物类":result="4";break;
+		}
+		return result;
+	}
 	public String taskState(String type){
 		String result="";
 		switch(type){
@@ -1118,4 +1620,48 @@ public class TestJUnitHasChildren {
 		}
 		return result;
 	}
+
+	public String sourceType(String type){
+		String result="1";
+		switch(type){
+			case "申请人自备":result="10";break;
+			case "政府部门核发":result="20";break;
+			case "官网下载":result="30";break;
+			case "中介机构或法定机构产生":result="40";break;
+			case "其他":result="99";break;
+		}
+		return result;
+	}
+
+	public String isNeed(String type){
+		String result="4";
+		switch(type){
+			case "必要":result="1";break;
+			case "非必要":result="2";break;
+			case "容缺后补":result="3";break;
+		}
+		return result;
+	}
+	public String materialType(String type){
+		String result="";
+		switch(type){
+			case "原件":result="1";break;
+			case "复印件":result="2";break;
+			case "原件和复印件":result="3";break;
+		}
+		return result;
+	}
+
+	public static String getNumberText(String str){
+		StringBuffer number = new StringBuffer("");
+
+		String[] strArray = str.split("");
+		for (String string : strArray) {
+			if(RegUtils.isNumberText(string)){
+				number.append(string);
+			}
+		}
+		return number.toString();
+	}
+
 }
